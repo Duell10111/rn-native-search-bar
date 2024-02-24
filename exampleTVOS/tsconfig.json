@@ -1,0 +1,10 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "paths": {
+      "rn-native-search-bar": ["../src/index"],
+      "rn-native-search-bar/*": ["../src/*"]
+    }
+  }
+}

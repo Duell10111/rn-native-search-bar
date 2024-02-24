@@ -35,10 +35,32 @@ public class RnNativeSearchBarModule: Module {
     // Enables the module to be used as a native view. Definition components that are accepted as part of the
     // view definition: Prop, Events.
     View(RnNativeSearchBarView.self) {
+      Events("onChangeText")
+        
       // Defines a setter for the `name` prop.
       Prop("name") { (view: RnNativeSearchBarView, prop: String) in
         print(prop)
       }
+        
+      Prop("text") { (view: RnNativeSearchBarView, prop: String) in
+        view.searchViewController.searchController.searchBar.text = prop
+      }
+        
+      Prop("placeholder") { (view: RnNativeSearchBarView, prop: String) in
+        view.searchViewController.searchController.searchBar.placeholder = prop
+      }
+        
+      Prop("textColor") { (view: RnNativeSearchBarView, color: UIColor) in
+          view.searchViewController.searchController.searchBar.tintColor = color
+      }
+        
+      AsyncFunction("clearText") { (viewTag: Int, promise: Promise) in
+          guard let view = self.appContext?.findView(withTag: viewTag, ofType: RnNativeSearchBarView.self) else {
+            throw Exceptions.ViewNotFound((tag: viewTag, type: RnNativeSearchBarView.self))
+          }
+          view.clearText()
+      }
+      .runOnQueue(.main)
     }
   }
 }

@@ -1,0 +1,43 @@
+{
+  "expo": {
+    "name": "rn-native-search-bar-example-tvos",
+    "slug": "rn-native-search-bar-example-tvos",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "expo.modules.rnnativesearchbar.exampleTVOS"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "expo.modules.rnnativesearchbar.exampleTVOS"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "@react-native-tvos/config-tv",
+        {
+          "isTV": true,
+          "showVerboseWarnings": false,
+          "tvosDeploymentTarget": "13.4",
+          "removeFlipperOnAndroid": true
+        }
+      ]
+    ]
+  }
+}
