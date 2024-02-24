@@ -42,9 +42,11 @@ android/keystores/debug.keystore
 # Cocoapods
 #
 example/ios/Pods
+exampleTVOS/ios/Pods
 
 # Ruby
 example/vendor/
+exampleTVOS/vendor/
 
 # node.js
 #
