@@ -1,0 +1,42 @@
+{
+  "name": "rn-native-search-bar",
+  "version": "0.1.0",
+  "description": "Native Searchbar",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "scripts": {
+    "build": "expo-module build",
+    "clean": "expo-module clean",
+    "lint": "expo-module lint",
+    "test": "expo-module test",
+    "prepare": "expo-module prepare",
+    "prepublishOnly": "expo-module prepublishOnly",
+    "expo-module": "expo-module",
+    "open:ios": "open -a \"Xcode\" example/ios",
+    "open:android": "open -a \"Android Studio\" example/android"
+  },
+  "keywords": [
+    "react-native",
+    "expo",
+    "rn-native-search-bar",
+    "RnNativeSearchBar"
+  ],
+  "repository": "https://github.com/Duell10111/rn-native-search-bar",
+  "bugs": {
+    "url": "https://github.com/Duell10111/rn-native-search-bar/issues"
+  },
+  "author": "Duell10111 <duell10111@t-online.de> (https://github.com/Duell10111)",
+  "license": "MIT",
+  "homepage": "https://github.com/Duell10111/rn-native-search-bar#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/react": "^18.0.25",
+    "expo-module-scripts": "^3.4.0",
+    "expo-modules-core": "^1.11.2"
+  },
+  "peerDependencies": {
+    "expo": "*",
+    "react": "*",
+    "react-native": "*"
+  }
+}
