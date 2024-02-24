@@ -1,3 +1,5 @@
+import { StyleProp, ViewStyle } from "react-native";
+
 export type ChangeEventPayload = {
   value: string;
 };
@@ -7,11 +9,11 @@ export type OnChangeTextEvent = {
 };
 
 export type RnNativeSearchBarViewProps = {
-  name: string;
+  // TODO: Remove?
+  name?: string;
   placeholder?: string;
   text?: string;
   textColor?: string;
-  // TODO: Add react-native as dev dependency?
-  // style?: StyleProp<View>
-  onChangeText?: (event: {nativeEvent: OnChangeTextEvent}) => void;
+  style?: StyleProp<ViewStyle>;
+  onChangeText?: (event: { nativeEvent: OnChangeTextEvent }) => void;
 };

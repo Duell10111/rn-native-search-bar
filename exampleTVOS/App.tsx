@@ -1,15 +1,15 @@
-import { StyleSheet, Text, View } from 'react-native';
-
-import * as RnNativeSearchBar from 'rn-native-search-bar';
+import { StyleSheet, Text, View } from "react-native";
+import * as RnNativeSearchBar from "rn-native-search-bar";
 
 export default function App() {
-  console.log("APP test")
+  console.log("APP test");
   return (
     <View style={styles.container}>
       <Text>{RnNativeSearchBar.hello()}</Text>
       <RnNativeSearchBar.RnNativeSearchBarView
-        name={"name"} placeholder={"Placeholder"} text={"TEXT"}
-        textColor={"#ff0000"}
+        placeholder="Placeholder"
+        text="TEXT"
+        textColor="#ff0000"
         style={styles.searchView}
         onChangeText={(event) => console.log(event.nativeEvent.text)}
       />
@@ -20,13 +20,13 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
   searchView: {
     width: 1920,
     height: 1000,
-    backgroundColor: "blue"
-  }
+    backgroundColor: "blue",
+  },
 });
