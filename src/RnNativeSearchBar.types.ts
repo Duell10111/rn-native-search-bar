@@ -4,7 +4,7 @@ export type ChangeEventPayload = {
   value: string;
 };
 
-export type OnChangeTextEvent = {
+export type OnSearchTextChangedEvent = {
   text: string;
 };
 
@@ -15,5 +15,5 @@ export type RnNativeSearchBarViewProps = {
   text?: string;
   textColor?: string;
   style?: StyleProp<ViewStyle>;
-  onChangeText?: (event: { nativeEvent: OnChangeTextEvent }) => void;
+  onSearchTextChanged?: (event: { nativeEvent: OnSearchTextChangedEvent }) => void;
 };
