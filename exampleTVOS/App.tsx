@@ -12,6 +12,7 @@ export default function App() {
         style={styles.searchView}
         onSearchTextChanged={(event) => console.log(event.nativeEvent.text)}
         onSearchButtonClicked={(event) => console.log(event.nativeEvent.text)}
+        onSearchTextEditEndedEvent={() => console.log("Text Edit ended!")}
       />
     </View>
   );

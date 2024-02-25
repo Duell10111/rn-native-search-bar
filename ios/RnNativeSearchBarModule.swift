@@ -35,7 +35,7 @@ public class RnNativeSearchBarModule: Module {
     // Enables the module to be used as a native view. Definition components that are accepted as part of the
     // view definition: Prop, Events.
     View(RnNativeSearchBarView.self) {
-      Events("onSearchTextChanged", "onSearchButtonClicked")
+      Events("onSearchTextChanged", "onSearchButtonClicked", "onSearchTextEditEndedEvent")
         
       // Defines a setter for the `name` prop.
       Prop("name") { (view: RnNativeSearchBarView, prop: String) in
@@ -52,6 +52,14 @@ public class RnNativeSearchBarModule: Module {
         
       Prop("textColor") { (view: RnNativeSearchBarView, color: UIColor) in
           view.searchViewController.searchController.searchBar.tintColor = color
+      }
+        
+      AsyncFunction("focus") { (view: RnNativeSearchBarView) in
+          view.becomeFirstResponder()
+      }
+        
+      AsyncFunction("blur") { (view: RnNativeSearchBarView) in
+          view.resignFirstResponder()
       }
         
       AsyncFunction("clearText") { (viewTag: Int, promise: Promise) in

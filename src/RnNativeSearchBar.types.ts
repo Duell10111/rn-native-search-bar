@@ -21,4 +21,5 @@ export type RnNativeSearchBarViewProps = {
   style?: StyleProp<ViewStyle>;
   onSearchTextChanged?: (event: { nativeEvent: OnSearchTextChangedEvent }) => void;
   onSearchButtonClicked?: (event: { nativeEvent: OnSearchButtonClickedEvent }) => void;
+  onSearchTextEditEndedEvent?: () => void;
 };

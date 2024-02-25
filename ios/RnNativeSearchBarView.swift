@@ -7,6 +7,7 @@ class RnNativeSearchBarView: ExpoView, UISearchBarDelegate {
     var searchViewController : UISearchContainerViewController
     let onSearchTextChanged = EventDispatcher()
     let onSearchButtonClicked = EventDispatcher()
+    let onSearchTextEditEndedEvent = EventDispatcher()
     
     required init(appContext: AppContext? = nil) {
         let searchController = UISearchController(searchResultsController: UIViewController())
@@ -28,6 +29,16 @@ class RnNativeSearchBarView: ExpoView, UISearchBarDelegate {
         searchViewController.view.removeFromSuperview()
         searchViewController.removeFromParent()
         super.removeFromSuperview()
+    }
+    
+    override func becomeFirstResponder() -> Bool {
+        super.becomeFirstResponder()
+        return searchViewController.becomeFirstResponder()
+    }
+    
+    override func resignFirstResponder() -> Bool {
+        super.resignFirstResponder()
+        return searchViewController.resignFirstResponder()
     }
     
     private func addViewControllerAsSubView() {
@@ -54,6 +65,10 @@ class RnNativeSearchBarView: ExpoView, UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         self.onSearchButtonClicked((["text": searchBar.text ?? ""]))
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        self.onSearchTextEditEndedEvent()
     }
     
     func clearText() {
