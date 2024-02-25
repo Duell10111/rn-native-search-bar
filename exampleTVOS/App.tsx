@@ -2,7 +2,6 @@ import { StyleSheet, Text, View } from "react-native";
 import * as RnNativeSearchBar from "rn-native-search-bar";
 
 export default function App() {
-  console.log("APP test");
   return (
     <View style={styles.container}>
       <Text>{RnNativeSearchBar.hello()}</Text>
@@ -12,6 +11,7 @@ export default function App() {
         textColor="#ff0000"
         style={styles.searchView}
         onSearchTextChanged={(event) => console.log(event.nativeEvent.text)}
+        onSearchButtonClicked={(event) => console.log(event.nativeEvent.text)}
       />
     </View>
   );

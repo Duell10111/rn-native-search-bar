@@ -6,6 +6,7 @@ class RnNativeSearchBarView: ExpoView, UISearchBarDelegate {
     
     var searchViewController : UISearchContainerViewController
     let onSearchTextChanged = EventDispatcher()
+    let onSearchButtonClicked = EventDispatcher()
     
     required init(appContext: AppContext? = nil) {
         let searchController = UISearchController(searchResultsController: UIViewController())
@@ -49,6 +50,10 @@ class RnNativeSearchBarView: ExpoView, UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         print("Textchange: ", searchText)
         self.onSearchTextChanged((["text": searchText]))
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        self.onSearchButtonClicked((["text": searchBar.text ?? ""]))
     }
     
     func clearText() {

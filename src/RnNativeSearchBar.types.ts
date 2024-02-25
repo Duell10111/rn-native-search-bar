@@ -8,6 +8,10 @@ export type OnSearchTextChangedEvent = {
   text: string;
 };
 
+export type OnSearchButtonClickedEvent = {
+  text: string;
+};
+
 export type RnNativeSearchBarViewProps = {
   // TODO: Remove?
   name?: string;
@@ -16,4 +20,5 @@ export type RnNativeSearchBarViewProps = {
   textColor?: string;
   style?: StyleProp<ViewStyle>;
   onSearchTextChanged?: (event: { nativeEvent: OnSearchTextChangedEvent }) => void;
+  onSearchButtonClicked?: (event: { nativeEvent: OnSearchButtonClickedEvent }) => void;
 };
