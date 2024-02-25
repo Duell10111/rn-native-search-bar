@@ -11,7 +11,7 @@ export default function App() {
         text="TEXT"
         textColor="#ff0000"
         style={styles.searchView}
-        onChangeText={(event) => console.log(event.nativeEvent.text)}
+        onSearchTextChanged={(event) => console.log(event.nativeEvent.text)}
       />
     </View>
   );
