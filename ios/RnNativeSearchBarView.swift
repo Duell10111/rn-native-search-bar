@@ -4,13 +4,14 @@ import ExpoModulesCore
 // to apply the proper styling (e.g. border radius and shadows).
 class RnNativeSearchBarView: ExpoView, UISearchBarDelegate {
     
+    var searchResultController = UIViewController()
     var searchViewController : UISearchContainerViewController
     let onSearchTextChanged = EventDispatcher()
     let onSearchButtonClicked = EventDispatcher()
     let onSearchTextEditEndedEvent = EventDispatcher()
     
     required init(appContext: AppContext? = nil) {
-        let searchController = UISearchController(searchResultsController: UIViewController())
+        let searchController = UISearchController(searchResultsController: searchResultController)
         searchViewController = UISearchContainerViewController(searchController: searchController)
         super.init(appContext: appContext)
         searchController.searchBar.delegate = self
@@ -33,12 +34,12 @@ class RnNativeSearchBarView: ExpoView, UISearchBarDelegate {
     
     override func becomeFirstResponder() -> Bool {
         super.becomeFirstResponder()
-        return searchViewController.becomeFirstResponder()
+        return searchViewController.searchController.searchBar.becomeFirstResponder()
     }
     
     override func resignFirstResponder() -> Bool {
         super.resignFirstResponder()
-        return searchViewController.resignFirstResponder()
+        return searchViewController.searchController.searchBar.resignFirstResponder()
     }
     
     private func addViewControllerAsSubView() {
@@ -73,6 +74,17 @@ class RnNativeSearchBarView: ExpoView, UISearchBarDelegate {
     
     func clearText() {
         searchViewController.searchController.searchBar.text = ""
+    }
+    
+    override func insertReactSubview(_ subview: UIView!, at atIndex: Int) {
+        searchResultController.view.addSubview(subview)
+    }
+    
+    override func removeReactSubview(_ subview: UIView!) {
+        subview.removeFromSuperview()
+        searchViewController.view?.subviews.forEach({ v in
+            v.removeFromSuperview()
+        })
     }
     
 }

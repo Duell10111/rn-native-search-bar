@@ -1,4 +1,5 @@
 import { StyleProp, ViewStyle } from "react-native";
+import React from "react";
 
 export type ChangeEventPayload = {
   value: string;
@@ -22,4 +23,5 @@ export type RnNativeSearchBarViewProps = {
   onSearchTextChanged?: (event: { nativeEvent: OnSearchTextChangedEvent }) => void;
   onSearchButtonClicked?: (event: { nativeEvent: OnSearchButtonClickedEvent }) => void;
   onSearchTextEditEndedEvent?: () => void;
+  children: React.ReactNode;
 };
