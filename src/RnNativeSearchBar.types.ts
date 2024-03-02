@@ -13,6 +13,10 @@ export type OnSearchButtonClickedEvent = {
   text: string;
 };
 
+export type OnSearchTextEditEndedEvent = {
+  text: string;
+};
+
 export type RnNativeSearchBarViewProps = {
   // TODO: Remove?
   name?: string;
@@ -23,7 +27,7 @@ export type RnNativeSearchBarViewProps = {
   style?: StyleProp<ViewStyle>;
   onSearchTextChanged?: (event: { nativeEvent: OnSearchTextChangedEvent }) => void;
   onSearchButtonClicked?: (event: { nativeEvent: OnSearchButtonClickedEvent }) => void;
-  onSearchTextEditEndedEvent?: () => void;
+  onSearchTextEditEndedEvent?: (event: { nativeEvent: OnSearchTextEditEndedEvent }) => void;
   searchHints?: string[];
   children: React.ReactNode;
 };

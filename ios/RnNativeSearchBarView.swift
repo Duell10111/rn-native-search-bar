@@ -69,7 +69,7 @@ class RnNativeSearchBarView: ExpoView, UISearchBarDelegate {
     }
     
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        self.onSearchTextEditEndedEvent()
+        self.onSearchTextEditEndedEvent(["text": searchBar.text ?? ""])
     }
     
     func clearText() {
