@@ -24,5 +24,6 @@ export type RnNativeSearchBarViewProps = {
   onSearchTextChanged?: (event: { nativeEvent: OnSearchTextChangedEvent }) => void;
   onSearchButtonClicked?: (event: { nativeEvent: OnSearchButtonClickedEvent }) => void;
   onSearchTextEditEndedEvent?: () => void;
+  searchHints?: string[];
   children: React.ReactNode;
 };

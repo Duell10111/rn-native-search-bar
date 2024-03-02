@@ -64,6 +64,17 @@ public class RnNativeSearchBarModule: Module {
           }
       }
         
+      Prop("searchHints") { (view: RnNativeSearchBarView, hints: [String]) in
+          if #available(tvOS 14.0, *) {
+              let searchHints = hints.map { h in
+                  self.createSearchHint(h)
+              }
+              view.searchViewController.searchController.searchSuggestions = searchHints
+          } else {
+              // No Search Hints available
+          }
+      }
+        
       AsyncFunction("focus") { (view: RnNativeSearchBarView) in
           view.becomeFirstResponder()
       }
@@ -80,5 +91,10 @@ public class RnNativeSearchBarModule: Module {
       }
       .runOnQueue(.main)
     }
+  }
+    
+  @available(tvOS 14.0, *)
+  func createSearchHint(_ hint: String) -> UISearchSuggestion {
+      return UISearchSuggestionItem(localizedSuggestion: hint)
   }
 }
