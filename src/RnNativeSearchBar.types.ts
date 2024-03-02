@@ -19,6 +19,7 @@ export type RnNativeSearchBarViewProps = {
   placeholder?: string;
   text?: string;
   textColor?: string;
+  appearance?: "dark" | "light";
   style?: StyleProp<ViewStyle>;
   onSearchTextChanged?: (event: { nativeEvent: OnSearchTextChangedEvent }) => void;
   onSearchButtonClicked?: (event: { nativeEvent: OnSearchButtonClickedEvent }) => void;

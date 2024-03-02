@@ -54,6 +54,16 @@ public class RnNativeSearchBarModule: Module {
           view.searchViewController.searchController.searchBar.tintColor = color
       }
         
+      Prop("appearance") { (view: RnNativeSearchBarView, prop: String) in
+          if(prop == "dark") {
+              view.searchViewController.searchController.searchBar.keyboardAppearance = .dark
+          } else if(prop == "light") {
+              view.searchViewController.searchController.searchBar.keyboardAppearance = .light
+          } else {
+              view.searchViewController.searchController.searchBar.keyboardAppearance = .default
+          }
+      }
+        
       AsyncFunction("focus") { (view: RnNativeSearchBarView) in
           view.becomeFirstResponder()
       }
