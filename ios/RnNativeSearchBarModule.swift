@@ -36,24 +36,24 @@ public class RnNativeSearchBarModule: Module {
     // view definition: Prop, Events.
     View(RnNativeSearchBarView.self) {
       Events("onSearchTextChanged", "onSearchButtonClicked", "onSearchTextEditEndedEvent")
-        
+
       // Defines a setter for the `name` prop.
       Prop("name") { (view: RnNativeSearchBarView, prop: String) in
         print(prop)
       }
-        
+
       Prop("text") { (view: RnNativeSearchBarView, prop: String) in
         view.searchViewController.searchController.searchBar.text = prop
       }
-        
+
       Prop("placeholder") { (view: RnNativeSearchBarView, prop: String) in
         view.searchViewController.searchController.searchBar.placeholder = prop
       }
-        
+
       Prop("textColor") { (view: RnNativeSearchBarView, color: UIColor) in
           view.searchViewController.searchController.searchBar.tintColor = color
       }
-        
+
       Prop("appearance") { (view: RnNativeSearchBarView, prop: String) in
           if(prop == "dark") {
               view.searchViewController.searchController.searchBar.keyboardAppearance = .dark
@@ -63,9 +63,9 @@ public class RnNativeSearchBarModule: Module {
               view.searchViewController.searchController.searchBar.keyboardAppearance = .default
           }
       }
-        
+
       Prop("searchHints") { (view: RnNativeSearchBarView, hints: [String]) in
-          if #available(tvOS 14.0, *) {
+          if #available(tvOS 14.0, iOS 16.0, *) {
               let searchHints = hints.map { h in
                   self.createSearchHint(h)
               }
@@ -74,15 +74,15 @@ public class RnNativeSearchBarModule: Module {
               // No Search Hints available
           }
       }
-        
+
       AsyncFunction("focus") { (view: RnNativeSearchBarView) in
           view.becomeFirstResponder()
       }
-        
+
       AsyncFunction("blur") { (view: RnNativeSearchBarView) in
           view.resignFirstResponder()
       }
-        
+
       AsyncFunction("clearText") { (viewTag: Int, promise: Promise) in
           guard let view = self.appContext?.findView(withTag: viewTag, ofType: RnNativeSearchBarView.self) else {
             throw Exceptions.ViewNotFound((tag: viewTag, type: RnNativeSearchBarView.self))
@@ -92,8 +92,8 @@ public class RnNativeSearchBarModule: Module {
       .runOnQueue(.main)
     }
   }
-    
-  @available(tvOS 14.0, *)
+
+  @available(tvOS 14.0, iOS 16.0, *)
   func createSearchHint(_ hint: String) -> UISearchSuggestion {
       return UISearchSuggestionItem(localizedSuggestion: hint)
   }
