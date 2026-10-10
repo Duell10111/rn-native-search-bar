@@ -53,9 +53,9 @@ class RnNativeSearchBarView: ExpoView, UISearchBarDelegate {
             print("Subviews not empty!")
         }
         
-        guard let vc = reactViewController() else { print("VC null!"); return }
+        guard let vc = parentViewController else { print("VC null!"); return }
         
-        searchViewController.didMove(toParent: reactViewController())
+        searchViewController.didMove(toParent: vc)
         vc.addChild(searchViewController)
     }
     
@@ -76,12 +76,12 @@ class RnNativeSearchBarView: ExpoView, UISearchBarDelegate {
         searchViewController.searchController.searchBar.text = ""
     }
     
-    override func insertReactSubview(_ subview: UIView!, at atIndex: Int) {
-        searchResultController.view.addSubview(subview)
+    override func mountChildComponentView(_ childComponentView: UIView, index: Int) {
+        searchResultController.view.addSubview(childComponentView)
     }
     
-    override func removeReactSubview(_ subview: UIView!) {
-        subview.removeFromSuperview()
+    override func unmountChildComponentView(_ childComponentView: UIView, index: Int) {
+        childComponentView.removeFromSuperview()
         searchViewController.view?.subviews.forEach({ v in
             v.removeFromSuperview()
         })
