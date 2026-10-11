@@ -83,13 +83,9 @@ public class RnNativeSearchBarModule: Module {
           view.resignFirstResponder()
       }
 
-      AsyncFunction("clearText") { (viewTag: Int, promise: Promise) in
-          guard let view = self.appContext?.findView(withTag: viewTag, ofType: RnNativeSearchBarView.self) else {
-            throw Exceptions.ViewNotFound((tag: viewTag, type: RnNativeSearchBarView.self))
-          }
+      AsyncFunction("clearText") { (view: RnNativeSearchBarView) in
           view.clearText()
       }
-      .runOnQueue(.main)
     }
   }
 

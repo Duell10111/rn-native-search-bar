@@ -1,11 +1,19 @@
-import { requireNativeViewManager } from 'expo-modules-core';
-import * as React from 'react';
+import { requireNativeViewManager } from "expo-modules-core";
+import * as React from "react";
 
-import { RnNativeSearchBarViewProps } from './RnNativeSearchBar.types';
+import type {
+  RnNativeSearchBarViewProps,
+  RnNativeSearchBarViewRef,
+} from "./RnNativeSearchBar.types";
 
-const NativeView: React.ComponentType<RnNativeSearchBarViewProps> =
-  requireNativeViewManager('RnNativeSearchBar');
+const NativeView: React.ComponentType<
+  RnNativeSearchBarViewProps & React.RefAttributes<RnNativeSearchBarViewRef>
+> = requireNativeViewManager("RnNativeSearchBar");
 
-export default function RnNativeSearchBarView(props: RnNativeSearchBarViewProps) {
-  return <NativeView {...props} />;
-}
+const RnNativeSearchBarView = React.forwardRef<
+  RnNativeSearchBarViewRef,
+  RnNativeSearchBarViewProps
+>((props, ref) => <NativeView {...props} ref={ref} />);
+RnNativeSearchBarView.displayName = "RnNativeSearchBarView";
+
+export default RnNativeSearchBarView;

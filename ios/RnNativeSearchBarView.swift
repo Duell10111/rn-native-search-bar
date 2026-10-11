@@ -15,6 +15,11 @@ class RnNativeSearchBarView: ExpoView, UISearchBarDelegate {
         searchViewController = UISearchContainerViewController(searchController: searchController)
         super.init(appContext: appContext)
         searchController.searchBar.delegate = self
+#if os(iOS)
+        // On iOS UIKit keeps the results controller hidden unless asked to show it,
+        // which would hide the React children. tvOS always shows it.
+        searchController.showsSearchResultsController = true
+#endif
         
         clipsToBounds = true
     }
@@ -76,17 +81,31 @@ class RnNativeSearchBarView: ExpoView, UISearchBarDelegate {
         searchViewController.searchController.searchBar.text = ""
     }
     
-    override func mountChildComponentView(_ childComponentView: UIView, index: Int) {
-        searchResultController.view.addSubview(childComponentView)
+    // MARK: - Child views (rendered inside the search results controller)
+
+    func mountSearchResultView(_ childView: UIView) {
+        searchResultController.view.addSubview(childView)
     }
-    
-    override func unmountChildComponentView(_ childComponentView: UIView, index: Int) {
-        childComponentView.removeFromSuperview()
+
+    func unmountSearchResultView(_ childView: UIView) {
+        childView.removeFromSuperview()
         searchViewController.view?.subviews.forEach({ v in
             v.removeFromSuperview()
         })
     }
-    
+
+    // The legacy architecture counterparts live in RnNativeSearchBarView+OldArch.swift.
+    // TODO(old-arch): Remove the surrounding #if once the legacy architecture is dropped.
+#if RCT_NEW_ARCH_ENABLED
+    override func mountChildComponentView(_ childComponentView: UIView, index: Int) {
+        mountSearchResultView(childComponentView)
+    }
+
+    override func unmountChildComponentView(_ childComponentView: UIView, index: Int) {
+        unmountSearchResultView(childComponentView)
+    }
+#endif
+
 }
 
 extension UIView {

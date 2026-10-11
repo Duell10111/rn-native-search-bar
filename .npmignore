@@ -10,3 +10,7 @@ __tests__
 /android/build/
 /example/
 /exampleTVOS/
+/jest.config.js
+/eslint.config.js
+/e2e/
+*.patch

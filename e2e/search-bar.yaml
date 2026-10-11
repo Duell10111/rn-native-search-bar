@@ -1,0 +1,36 @@
+# End-to-end test for the iOS example app (example/).
+# Run with: cd example && npm run e2e   (requires a booted simulator with the app installed)
+appId: expo.modules.rnnativesearchbar.example
+---
+- launchApp:
+    clearState: true
+- assertVisible: "Hello world! 👋"
+
+# Typing emits onSearchTextChanged and renders the children as search results
+- tapOn: "Search fruits"
+- tapOn:
+    text: "Continue"
+    optional: true # iOS keyboard onboarding on fresh simulators
+- inputText: "an"
+- assertVisible: "Text: an"
+- assertVisible: "Banana"
+- assertVisible: "Mango"
+- assertVisible: "Orange"
+- assertNotVisible: "Apple"
+
+# Pressing the keyboard search button emits onSearchButtonClicked and ends editing
+- pressKey: Enter
+- assertVisible: "Submitted: an"
+- assertVisible: "Edit ended: an"
+
+# clearText() via ref empties the native search field
+- tapOn: "Clear"
+- assertVisible: "Search fruits"
+
+# focus() / blur() via ref
+- tapOn: "Focus"
+- inputText: "pe"
+- assertVisible: "Text: pe"
+- assertVisible: "Peach"
+- tapOn: "Blur"
+- assertVisible: "Edit ended: pe"
