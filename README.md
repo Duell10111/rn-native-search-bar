@@ -1,40 +1,116 @@
 # rn-native-search-bar
 
-Native Searchbar
+A native search bar for React Native on **iOS** and **tvOS**, built as an [Expo module](https://docs.expo.dev/modules/overview/).
 
-# API documentation
+The component wraps UIKit's `UISearchController` inside a `UISearchContainerViewController`. On tvOS this gives you the system search experience including the on-screen keyboard; on iOS you get a native `UISearchBar`. React children are rendered inside the search results controller, so your result list sits right below the native search UI.
 
-- [Documentation for the main branch](https://github.com/expo/expo/blob/main/docs/pages/versions/unversioned/sdk/rn-native-search-bar.md)
-- [Documentation for the latest stable release](https://docs.expo.dev/versions/latest/sdk/rn-native-search-bar/)
+| Platform | Status |
+| --- | --- |
+| iOS (15.1+) | ✅ Supported |
+| tvOS (15.1+, via [react-native-tvos](https://github.com/react-native-tvos/react-native-tvos)) | ✅ Supported |
+| Android | 🚧 Not implemented (renders an empty view) |
+| Web | ❌ Not supported |
 
-# Installation in managed Expo projects
+Both the New Architecture (Fabric) and the legacy architecture (Paper) are supported.
 
-For [managed](https://docs.expo.dev/archive/managed-vs-bare/) Expo projects, please follow the installation instructions in the [API documentation for the latest stable release](#api-documentation). If you follow the link and there is no documentation available then this library is not yet usable within managed projects &mdash; it is likely to be included in an upcoming Expo SDK release.
+## Installation
 
-# Installation in bare React Native projects
+The library requires the `expo` package. In a bare React Native project, [install and configure Expo modules](https://docs.expo.dev/bare/installing-expo-modules/) first.
 
-For bare React Native projects, you must ensure that you have [installed and configured the `expo` package](https://docs.expo.dev/bare/installing-expo-modules/) before continuing.
-
-### Add the package to your npm dependencies
-
-```
+```sh
 npm install rn-native-search-bar
+# or the latest prerelease
+npm install rn-native-search-bar@beta
 ```
 
-### Configure for iOS
+Then install the pods:
 
-Run `npx pod-install` after installing the npm package.
+```sh
+npx pod-install
+```
 
+In an Expo project using [Continuous Native Generation](https://docs.expo.dev/workflow/continuous-native-generation/), run `npx expo prebuild` instead. The module contains native code, so it does **not** work in Expo Go – use a [development build](https://docs.expo.dev/develop/development-builds/introduction/).
 
-### Configure for Android
+## Usage
 
+```tsx
+import { useMemo, useRef, useState } from "react";
+import { ScrollView, Text } from "react-native";
+import {
+  RnNativeSearchBarView,
+  type RnNativeSearchBarViewRef,
+} from "rn-native-search-bar";
 
+const ITEMS = ["Apple", "Banana", "Cherry", "Grape", "Lemon", "Mango"];
 
-# Contributing
+export default function SearchScreen() {
+  const searchBar = useRef<RnNativeSearchBarViewRef>(null);
+  const [query, setQuery] = useState("");
 
-Contributions are very welcome! Please refer to guidelines described in the [contributing guide]( https://github.com/expo/expo#contributing).
+  const results = useMemo(
+    () => ITEMS.filter((item) => item.toLowerCase().includes(query.toLowerCase())),
+    [query],
+  );
 
-# Architecture support
+  return (
+    <RnNativeSearchBarView
+      ref={searchBar}
+      style={{ flex: 1 }}
+      placeholder="Search fruits"
+      searchHints={results.slice(0, 3)}
+      onSearchTextChanged={(e) => setQuery(e.nativeEvent.text)}
+      onSearchButtonClicked={(e) => console.log("Submitted:", e.nativeEvent.text)}
+    >
+      {/* Rendered inside the native search results controller */}
+      <ScrollView style={{ flex: 1, paddingTop: 120 }}>
+        {results.map((item) => (
+          <Text key={item}>{item}</Text>
+        ))}
+      </ScrollView>
+    </RnNativeSearchBarView>
+  );
+}
+```
+
+> **Note:** The search UI occupies the top of the view, so give your children enough top padding (the examples use `120` on iOS and `400` on tvOS). On tvOS the component works best inside a full-screen view or `Modal`.
+
+See [`example/App.tsx`](example/App.tsx) (iOS) and [`exampleTVOS/App.tsx`](exampleTVOS/App.tsx) (tvOS) for complete examples.
+
+## API
+
+### `<RnNativeSearchBarView />`
+
+#### Props
+
+| Prop | Type | Description |
+| --- | --- | --- |
+| `placeholder` | `string` | Placeholder shown in the empty search field. |
+| `text` | `string` | Sets the text of the search field. |
+| `textColor` | `string` | Tint color of the search bar (cursor, accents). |
+| `appearance` | `"dark" \| "light"` | Keyboard appearance. Defaults to the system appearance. |
+| `searchHints` | `string[]` | Search suggestions shown by the system. Requires iOS 16+ / tvOS 14+; ignored on older versions. |
+| `style` | `StyleProp<ViewStyle>` | Style of the container view. Usually `{ flex: 1 }`. |
+| `children` | `ReactNode` | Content rendered inside the search results controller. |
+
+#### Events
+
+All events receive `{ nativeEvent: { text: string } }`.
+
+| Event | Fired when |
+| --- | --- |
+| `onSearchTextChanged` | The text in the search field changes. |
+| `onSearchButtonClicked` | The user presses the search/return button. |
+| `onSearchTextEditEndedEvent` | Editing ends (the search field loses focus). |
+
+#### Ref methods (`RnNativeSearchBarViewRef`)
+
+| Method | Description |
+| --- | --- |
+| `focus(): Promise<void>` | Focuses the search field and opens the keyboard. |
+| `blur(): Promise<void>` | Removes focus from the search field. |
+| `clearText(): Promise<void>` | Clears the search field. |
+
+## Architecture support
 
 The iOS/tvOS view supports both the New Architecture (Fabric) and the legacy architecture (Paper).
 Legacy support is isolated so it can be dropped easily – search for `TODO(old-arch)`:
@@ -43,7 +119,7 @@ Legacy support is isolated so it can be dropped easily – search for `TODO(old-
 - `ios/RnNativeSearchBarView.swift` – remove the `#if RCT_NEW_ARCH_ENABLED` / `#endif` around the Fabric overrides
 - `ios/RnNativeSearchBar.podspec` – remove `new_arch_enabled` and the `OTHER_SWIFT_FLAGS` entry
 
-# Development
+## Development
 
 | Command | Description |
 | --- | --- |
@@ -54,3 +130,11 @@ Legacy support is isolated so it can be dropped easily – search for `TODO(old-
 | `cd example && npm run e2e` | Maestro end-to-end tests (`e2e/`) against the installed iOS example app |
 
 The native `ios`/`android` folders of the example apps are generated by `expo prebuild` and are not checked in.
+
+### Releases
+
+Releases are published automatically to npm by [semantic-release](https://github.com/semantic-release/semantic-release) based on [Conventional Commits](https://www.conventionalcommits.org/). Pushes to `main` create stable releases, pushes to `beta` / `alpha` create prereleases. Use the `breaking:` commit type for a major release.
+
+## License
+
+MIT
