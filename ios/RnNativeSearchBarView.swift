@@ -80,6 +80,40 @@ class RnNativeSearchBarView: ExpoView, UISearchBarDelegate {
     func clearText() {
         searchViewController.searchController.searchBar.text = ""
     }
+
+#if os(tvOS)
+    private var relaxedSelectRecognizers: [UIGestureRecognizer] = []
+
+    override func didMoveToWindow() {
+        super.didMoveToWindow()
+        if window != nil {
+            letSelectPressesReachKeyboard()
+        } else {
+            restoreSelectPressCancellation()
+        }
+    }
+
+    /// React Native tvOS select recognizers can cancel presses in descendant views,
+    /// allowing search keyboard keys to receive focus but preventing text input.
+    private func letSelectPressesReachKeyboard() {
+        guard relaxedSelectRecognizers.isEmpty,
+              let selectRecognizerClass = NSClassFromString("RCTTVRemoteSelectGestureRecognizer") else { return }
+        var ancestor = superview
+        while let view = ancestor {
+            for recognizer in view.gestureRecognizers ?? []
+            where recognizer.isKind(of: selectRecognizerClass) && recognizer.cancelsTouchesInView {
+                recognizer.cancelsTouchesInView = false
+                relaxedSelectRecognizers.append(recognizer)
+            }
+            ancestor = view.superview
+        }
+    }
+
+    private func restoreSelectPressCancellation() {
+        relaxedSelectRecognizers.forEach { $0.cancelsTouchesInView = true }
+        relaxedSelectRecognizers.removeAll()
+    }
+#endif
     
     // MARK: - Child views (rendered inside the search results controller)
 
