@@ -1,0 +1,59 @@
+# Opens/updates the release PR from conventional commits on main (stable) or beta (prerelease).
+# Merging the release PR tags the release, creates the GitHub release and publishes to npm
+# with the dist-tag matching the branch (main -> latest, beta -> beta).
+name: Release Please
+
+on:
+  push:
+    branches:
+      - main
+      - beta
+
+jobs:
+  release-please:
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+    runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+    steps:
+      - uses: googleapis/release-please-action@v5
+        id: release
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          target-branch: ${{ github.ref_name }}
+          config-file: ${{ github.ref_name == 'beta' && 'release-please-config.beta.json' || 'release-please-config.json' }}
+          manifest-file: ${{ github.ref_name == 'beta' && '.release-please-manifest.beta.json' || '.release-please-manifest.json' }}
+
+  publish:
+    needs: release-please
+    if: needs.release-please.outputs.release_created == 'true'
+    permissions:
+      contents: read
+      id-token: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.release-please.outputs.tag_name }}
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Configure npm registry
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          registry-url: https://registry.npmjs.org
+
+      - name: Build package
+        run: yarn build
+
+      - name: Publish to npm
+        run: npm publish --provenance --access public --tag ${{ github.ref_name == 'beta' && 'beta' || 'latest' }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
