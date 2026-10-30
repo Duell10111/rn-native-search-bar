@@ -1,5 +1,11 @@
 # rn-native-search-bar
 
+[![npm version](https://img.shields.io/npm/v/rn-native-search-bar?logo=npm)](https://www.npmjs.com/package/rn-native-search-bar)
+[![npm beta version](https://img.shields.io/npm/v/rn-native-search-bar/beta?label=npm%20beta&logo=npm)](https://www.npmjs.com/package/rn-native-search-bar?activeTab=versions)
+[![npm downloads](https://img.shields.io/npm/dm/rn-native-search-bar?logo=npm)](https://www.npmjs.com/package/rn-native-search-bar)
+[![CI](https://github.com/Duell10111/rn-native-search-bar/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Duell10111/rn-native-search-bar/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](#license)
+
 A native search bar for React Native on **iOS** and **tvOS**, built as an [Expo module](https://docs.expo.dev/modules/overview/).
 
 The component wraps UIKit's `UISearchController` inside a `UISearchContainerViewController`. On tvOS this gives you the system search experience including the on-screen keyboard; on iOS you get a native `UISearchBar`. React children are rendered inside the search results controller, so your result list sits right below the native search UI.
