@@ -57,7 +57,10 @@ Flow for both branches:
    and changelog, creates the `vX.Y.Z` tag and a GitHub release (marked as
    prerelease on `beta`).
 3. The `publish` job then checks out the tag, builds the package and runs
-   `npm publish --provenance` with the dist-tag of the branch.
+   `npm publish` with the dist-tag of the branch. Authentication uses npm
+   trusted publishing (OIDC) bound to `release-please.yml`, so there is no npm
+   token secret. Renaming the workflow file breaks publishing until the trusted
+   publisher on npmjs.com is updated.
 
 Beta versions use the `prerelease` versioning strategy, so `1.0.0-beta.13`
 becomes `1.0.0-beta.14` on the next release.

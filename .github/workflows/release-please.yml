@@ -44,16 +44,9 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup
 
-      - name: Configure npm registry
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: .nvmrc
-          registry-url: https://registry.npmjs.org
-
       - name: Build package
         run: yarn build
 
+      # Authenticates via npm trusted publishing (OIDC, needs npm >= 11.5.1); provenance is added automatically.
       - name: Publish to npm
-        run: npm publish --provenance --access public --tag ${{ github.ref_name == 'beta' && 'beta' || 'latest' }}
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --access public --tag ${{ github.ref_name == 'beta' && 'beta' || 'latest' }}
