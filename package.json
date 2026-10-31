@@ -1,6 +1,6 @@
 {
   "name": "rn-native-search-bar",
-  "version": "1.0.0-beta.13",
+  "version": "1.0.0-beta.14",
   "description": "Native Searchbar",
   "main": "build/index.js",
   "types": "build/index.d.ts",
